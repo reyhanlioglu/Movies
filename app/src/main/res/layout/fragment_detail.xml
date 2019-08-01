@@ -5,77 +5,182 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
                 name="movie"
                 type="com.example.movies.model.Movie"/>
-        
+
         <variable
                 name="palette"
                 type="com.example.movies.model.MoviePalette"/>
     </data>
 
-    <RelativeLayout
+    <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".view.DetailFragment"
             android:background="@{palette.color}"
             >
 
-        <ImageView
-                android:id="@+id/movieImage"
+
+        <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                app:imageUrl="@{movie.imagePath}"
-                android:scaleType="fitCenter"
-                android:minHeight="200dp"
-                />
+                android:layout_height="match_parent"
 
-        <TextView
-                android:id="@+id/movieName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/movieImage"
-                android:text="@{movie.movieName}"
-                style="@style/Title"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="4dp"
-                />
-
-        <TextView
-                android:id="@+id/movieVoteAverage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/movieName"
-                android:text="@{movie.voteAverage}"
-                style="@style/Text"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="4dp"
-                />
-
-        <TextView
-                android:id="@+id/movieLanguage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/movieVoteAverage"
-                android:text="@{movie.language}"
-                style="@style/Text"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="4dp"
-                />
-
-        <TextView
-                android:id="@+id/moviePopularity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/movieLanguage"
-                android:text="@{movie.popularity}"
-                style="@style/Text"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="4dp"
-                />
+                >
 
 
-    </RelativeLayout>
+            <ImageView
+                    android:id="@+id/movieImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    app:imageUrl="@{movie.imagePath}"
+                    android:scaleType="fitCenter"
+                    android:minHeight="200dp"
+                    android:layout_marginTop="8dp"
+                    />
+
+
+            <TextView
+                    android:id="@+id/movieName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/movieImage"
+                    android:text="@{movie.movieName}"
+                    style="@style/Title"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="8dp"
+                    />
+
+            <LinearLayout
+                    android:id="@+id/layoutOverview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/movieName"
+                    android:layout_centerVertical="true"
+                    >
+
+                <TextView
+                        android:id="@+id/movieOverviewHolder"
+                        android:layout_width="85dp"
+                        android:layout_height="wrap_content"
+                        android:text="Overview:"
+                        style="@style/Title"
+                        android:layout_margin="4dp"
+                        android:singleLine="true"
+                        android:textAlignment="textEnd"
+                        android:gravity="end"/>
+
+                <TextView
+                        android:id="@+id/movieOverview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{movie.overview}"
+                        style="@style/Text"
+                        android:layout_margin="4dp"
+                        />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                    android:id="@+id/layoutRaiting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/layoutOverview"
+                    android:layout_centerVertical="true"
+                    >
+
+                <TextView
+                        android:id="@+id/movieVoteAverageHolder"
+                        android:layout_width="85dp"
+                        android:layout_height="wrap_content"
+                        android:text="Raiting:"
+                        style="@style/Title"
+                        android:layout_margin="4dp"
+                        android:singleLine="true"
+                        android:textAlignment="textEnd"
+                        android:gravity="end"/>
+
+                <TextView
+                        android:id="@+id/movieVoteAverage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{movie.voteAverage}"
+                        style="@style/Text"
+                        android:layout_margin="4dp"
+                        />
+            </LinearLayout>
+
+
+            <LinearLayout
+                    android:id="@+id/layoutLanguage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/layoutRaiting"
+                    android:layout_centerVertical="true"
+                    >
+
+                <TextView
+                        android:id="@+id/movieLanguageHolder"
+                        android:layout_width="85dp"
+                        android:layout_height="wrap_content"
+                        android:text="Language:"
+                        style="@style/Title"
+                        android:layout_margin="4dp"
+                        android:singleLine="true"
+                        android:textAlignment="textEnd"
+                        android:gravity="end"/>
+
+                <TextView
+                        android:id="@+id/movieLanguage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{movie.language}"
+                        style="@style/Text"
+                        android:layout_margin="4dp"
+                        />
+            </LinearLayout>
+
+
+            <LinearLayout
+                    android:id="@+id/layoutReleaseDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/layoutLanguage"
+                    android:layout_centerVertical="true"
+                    >
+
+                <TextView
+                        android:id="@+id/releaseDateHolder"
+                        android:layout_width="85dp"
+                        android:layout_height="wrap_content"
+                        android:text="Release Date:"
+                        style="@style/Title"
+                        android:layout_margin="4dp"
+                        android:singleLine="false"
+                        android:textAlignment="textEnd"
+                        android:gravity="end"/>
+
+                <TextView
+                        android:id="@+id/movieReleaseDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{movie.releaseDate}"
+                        style="@style/Text"
+                        android:layout_margin="4dp"
+                        android:layout_gravity="center_vertical"
+                        />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </layout>

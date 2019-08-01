@@ -20,9 +20,13 @@ data class Movie (
     @SerializedName("title")
     val movieName: String?,
 
-    @ColumnInfo(name = "popularity")
-    @SerializedName("popularity")
-    val popularity: String?,
+    @ColumnInfo(name = "overview")
+    @SerializedName("overview")
+    val overview: String?,
+
+    @ColumnInfo(name = "release_date")
+    @SerializedName("release_date")
+    val releaseDate: String?,
 
     @ColumnInfo(name = "vote_average")
     @SerializedName("vote_average")
