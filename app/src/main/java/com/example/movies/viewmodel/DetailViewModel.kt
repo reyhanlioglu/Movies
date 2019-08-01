@@ -2,7 +2,6 @@ package com.example.movies.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.movies.model.Movie
 import com.example.movies.model.MovieDatabase
 import kotlinx.coroutines.launch

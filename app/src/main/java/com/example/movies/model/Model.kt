@@ -1,6 +1,5 @@
 package com.example.movies.model
 
-import android.graphics.Color
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey

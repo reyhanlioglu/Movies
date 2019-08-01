@@ -32,8 +32,6 @@ import com.example.movies.viewmodel.DetailViewModel
  */
 class DetailFragment : Fragment() {
 
-    private val BASE_URL = "https://image.tmdb.org/t/p/w500"
-
     private lateinit var viewModel: DetailViewModel
     private var movieUuid = 0
 

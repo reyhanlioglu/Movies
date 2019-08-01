@@ -3,48 +3,53 @@ package com.example.movies.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.ViewPropertyAnimatorListener
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movies.R
 import com.example.movies.databinding.ItemMovieBinding
 import com.example.movies.model.Movie
+import jp.wasabeef.recyclerview.animators.holder.AnimateViewHolder
 import kotlinx.android.synthetic.main.item_movie.view.*
 
-class MovieListAdapter(val movieList: ArrayList<Movie>) : RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>(), MovieClickListener {
-
-    // private val BASE_URL = "https://image.tmdb.org/t/p/w500"
-
-    fun updateMovieList(newMovieList: List<Movie>){
-        movieList.clear()
-        movieList.addAll(newMovieList)
-        notifyDataSetChanged()
-    }
+class MovieListAdapter :
+    ListAdapter<Movie, MovieListAdapter.MovieViewHolder>(MovieAsync()),
+    MovieClickListener {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-      //  val view = inflater.inflate(R.layout.item_movie, parent, false)
+        //  val view = inflater.inflate(R.layout.item_movie, parent, false)
         val view = DataBindingUtil.inflate<ItemMovieBinding>(inflater, R.layout.item_movie, parent, false)
+
+        // ERROR
+        //notifyItemRangeInserted(0, movieList.size-1)
+
         return MovieViewHolder(view)
     }
 
-    override fun getItemCount() = movieList.size
-
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.view.movie = movieList[position]
+        holder.view.movie = getItem(position)
         holder.view.listener = this  //this means MovieClickListener
 
-        //Old codes
- /*         holder.view.name.text = movieList[position].movieName
-            holder.view.raiting.text = "Raiting: "+movieList[position].voteAverage
-            holder.view.setOnClickListener{
-            val action = ListFragmentDirections.actionDetailFragment()
-            action.movieUuid = movieList[position].uuid
-            Navigation.findNavController(it).navigate(action)
-        }
+        //ERROR
+        // notifyItemInserted(position)
 
-        holder.view.imageView.loadImage(BASE_URL + movieList[position].imagePath, getProgressDrawable(holder.view.imageView.context))
-    */
+
+        //Old codes
+        /*         holder.view.name.text = movieList[position].movieName
+                   holder.view.raiting.text = "Raiting: "+movieList[position].voteAverage
+                   holder.view.setOnClickListener{
+                   val action = ListFragmentDirections.actionDetailFragment()
+                   action.movieUuid = movieList[position].uuid
+                   Navigation.findNavController(it).navigate(action)
+               }
+
+               holder.view.imageView.loadImage(BASE_URL + movieList[position].imagePath, getProgressDrawable(holder.view.imageView.context))
+           */
     }
 
     override fun onMovieClicked(v: View) {
@@ -54,5 +59,47 @@ class MovieListAdapter(val movieList: ArrayList<Movie>) : RecyclerView.Adapter<M
         Navigation.findNavController(v).navigate(action)
     }
 
-    class MovieViewHolder(var view: ItemMovieBinding) : RecyclerView.ViewHolder(view.root)  //Binding class created automatically because we wrote <layout> tag at the top of xml file
+
+    class MovieViewHolder(var view: ItemMovieBinding) : RecyclerView.ViewHolder(view.root), AnimateViewHolder {
+
+        override fun preAnimateRemoveImpl(holder: RecyclerView.ViewHolder) {
+            // do something
+        }
+
+        override fun animateRemoveImpl(holder: RecyclerView.ViewHolder, listener: ViewPropertyAnimatorListener) {
+            ViewCompat.animate(itemView).apply {
+                translationY(-itemView.height * 0.3f)
+                alpha(0f)
+                duration = 300
+                setListener(listener)
+            }.start()
+        }
+
+        override fun preAnimateAddImpl(holder: RecyclerView.ViewHolder) {
+            ViewCompat.setTranslationY(itemView, -itemView.height * 0.3f)
+            ViewCompat.setAlpha(itemView, 0f)
+        }
+
+        override fun animateAddImpl(holder: RecyclerView.ViewHolder, listener: ViewPropertyAnimatorListener) {
+            ViewCompat.animate(itemView).apply {
+                translationY(0f)
+                alpha(1f)
+                duration = 300
+                setListener(listener)
+            }.start()
+        }
+    }
+
+    class MovieAsync : DiffUtil.ItemCallback<Movie>() {
+
+        override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+            return oldItem.uuid == newItem.uuid
+        }
+
+        override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+            return oldItem == newItem
+        }
+
+    }
+
 }

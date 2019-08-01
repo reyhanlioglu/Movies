@@ -12,7 +12,6 @@ import androidx.navigation.ui.NavigationUI
 import com.example.movies.R
 import com.example.movies.util.PERMISSION_SEND_SMS
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
 
