@@ -1,10 +1,9 @@
 package com.example.movies.view
 
-import android.app.ActionBar
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
@@ -18,17 +17,24 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
- //   private lateinit var toolbar: androidx.appcompat.app.ActionBar
+    private lateinit var bottomNavController: NavController
+    private lateinit var toolbar: androidx.appcompat.app.ActionBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         navController = Navigation.findNavController(this, R.id.fragment)
+        navController.setGraph(R.navigation.movies_navigation)
         NavigationUI.setupActionBarWithNavController(this, navController)
 
-  //      toolbar = supportActionBar!!
-   //     val bottomNavigation: BottomNavigationView = navigationView as BottomNavigationView
+        //Bottom Navigation Controller
+//        bottomNavController = Navigation.findNavController(this, R.id.bottomNavView)
+//        NavigationUI.setupActionBarWithNavController(this, bottomNavController)
+
+        toolbar = supportActionBar!!
+        val bottomNavigation: BottomNavigationView = bottomNavView as BottomNavigationView
+        bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
     }
 
@@ -37,17 +43,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun checkSmsPermission() {
-        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.SEND_SMS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
 
             //OPTIONAL METHOD -> shouldShowRequestPermissionRationale
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.SEND_SMS)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.SEND_SMS)) {
                 AlertDialog.Builder(this)
                     .setTitle("Send SMS permission")
                     .setMessage("This app requires access to send an SMS.")
                     .setPositiveButton("Ask me") { dialog, which ->
                         requestSmsPermission()
                     }
-                    .setNegativeButton("No") {dialog, which ->
+                    .setNegativeButton("No") { dialog, which ->
                         notifyDetailFragment(false)
                     }
                     .show()
@@ -65,12 +75,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when(requestCode) {
+        when (requestCode) {
             PERMISSION_SEND_SMS -> {
-                if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     notifyDetailFragment(true)
-                }
-                else {
+                } else {
                     notifyDetailFragment(false)
                 }
             }
@@ -79,8 +88,34 @@ class MainActivity : AppCompatActivity() {
 
     private fun notifyDetailFragment(permissionGranted: Boolean) {
         val activeFragment = fragment.childFragmentManager.primaryNavigationFragment
-        if(activeFragment is DetailFragment) {
+        if (activeFragment is DetailFragment) {
             (activeFragment).onPermissionResult(permissionGranted)
         }
     }
+
+
+    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        when (item.itemId) {
+            R.id.navigation_popular -> {
+                toolbar.title = "Popular"
+                navController.setGraph(R.navigation.movies_navigation)
+                NavigationUI.setupActionBarWithNavController(this, navController)
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_top_rated -> {
+                toolbar.title = "Top Rated"
+                //val albumsFragment = AlbumsFragment.newInstance()
+                //openFragment(albumsFragment)
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_favourites -> {
+                toolbar.title = "Favourites"
+                navController.setGraph(R.navigation.top_rated_navigation)
+                NavigationUI.setupActionBarWithNavController(this, navController)
+                return@OnNavigationItemSelectedListener true
+            }
+        }
+        false
+    }
+
 }
