@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/navigation_songs"
+            android:icon="@drawable/ic_popular"
+            android:title="Popular"/>
+
+    <item
+            android:id="@+id/navigation_albums"
+            android:icon="@drawable/ic_high_rated"
+            android:title="Top Rated"/>
+
+    <item
+            android:id="@+id/navigation_artists"
+            android:icon="@drawable/ic_favorite"
+            android:title="Favourites"/>
+
+
+</menu>

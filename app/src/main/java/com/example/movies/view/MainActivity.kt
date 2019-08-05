@@ -1,5 +1,6 @@
 package com.example.movies.view
 
+import android.app.ActionBar
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,11 +12,13 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.example.movies.R
 import com.example.movies.util.PERMISSION_SEND_SMS
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
+ //   private lateinit var toolbar: androidx.appcompat.app.ActionBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +26,9 @@ class MainActivity : AppCompatActivity() {
 
         navController = Navigation.findNavController(this, R.id.fragment)
         NavigationUI.setupActionBarWithNavController(this, navController)
+
+  //      toolbar = supportActionBar!!
+   //     val bottomNavigation: BottomNavigationView = navigationView as BottomNavigationView
 
     }
 
