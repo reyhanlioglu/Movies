@@ -18,4 +18,9 @@ class MoviesApiService {
     fun getMovies(): Single<Response> {
         return api.getMovies()
     }
+
+    fun getTopRatedMovies(): Single<Response> {
+        return api.getTopRatedMovies()
+    }
+
 }

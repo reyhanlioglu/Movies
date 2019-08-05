@@ -3,10 +3,7 @@ package com.example.movies.viewmodel
 import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.example.movies.model.Movie
-import com.example.movies.model.MovieDatabase
-import com.example.movies.model.MoviesApiService
-import com.example.movies.model.Response
+import com.example.movies.model.*
 import com.example.movies.util.NotificationsHelper
 import com.example.movies.util.SharedPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,21 +13,22 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
 import java.lang.NumberFormatException
 
-class ListViewModel(application: Application): BaseViewModel(application) {
+class TopRatedListViewModel(application: Application): BaseViewModel(application) {
 
     private val moviesService = MoviesApiService()
     private val disposable = CompositeDisposable()
     private val prefHelper = SharedPreferencesHelper(getApplication())
-    private var refreshTime = 5*60*1000000000L  //5 minutes in nano seconds
-   //private var refreshTime = 10*1000000000L  //10 seconds in nano seconds for testing purpose
+    private var refreshTime = 5*60*1000000000L
+
 
     val movies = MutableLiveData<List<Movie>>()
     val moviesLoadError = MutableLiveData<Boolean>()
     val loading = MutableLiveData<Boolean>()
 
+
     fun refresh() {
         checkCacheDuration()
-        val updateTime = prefHelper.getUpdateTime()
+        val updateTime = prefHelper.getTopMoviesUpdateTime()
         if(updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
             fetchFromDatabase()
         } else {
@@ -38,6 +36,7 @@ class ListViewModel(application: Application): BaseViewModel(application) {
         }
 
     }
+
 
     private fun checkCacheDuration() {
         val cachePreference = prefHelper.getCacheDuration()
@@ -50,6 +49,7 @@ class ListViewModel(application: Application): BaseViewModel(application) {
         }
     }
 
+
     fun refreshBypassCache() {
         fetchFromRemote()
     }
@@ -57,13 +57,13 @@ class ListViewModel(application: Application): BaseViewModel(application) {
     private fun fetchFromRemote() {
         loading.value = true
         disposable.add(
-            moviesService.getMovies()
+            moviesService.getTopRatedMovies()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object: DisposableSingleObserver<Response>(){
                     override fun onSuccess(response: Response) {
                         storeMoviesLocally(response.results)
-                        Toast.makeText(getApplication(), "Movies retreived from endpoint", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(getApplication(), "Top Rated Movies retreived from endpoint", Toast.LENGTH_SHORT).show()
 
                         //NOTIFICATION
                         NotificationsHelper(getApplication()).createNotification()
@@ -82,13 +82,11 @@ class ListViewModel(application: Application): BaseViewModel(application) {
     private fun fetchFromDatabase() {
         loading.value = true
         launch {
-            val movies = MovieDatabase(getApplication()).movieDao().getAllMovies()
+            val movies = MovieDatabase(getApplication()).movieDao().getAllMovies() // SHOULD BE EDITED
             moviesRetrieved(movies)
-            Toast.makeText(getApplication(), "Movies retreived from database", Toast.LENGTH_SHORT).show()
+            Toast.makeText(getApplication(), "Top Rated Movies retreived from database", Toast.LENGTH_SHORT).show()
         }
     }
-
-
 
     private fun moviesRetrieved(list: List<Movie>) {
         movies.value = list
@@ -96,12 +94,13 @@ class ListViewModel(application: Application): BaseViewModel(application) {
         loading.value = false
     }
 
+
     private fun storeMoviesLocally(list: List<Movie>) {
         //Background operations should be in coroutine
         launch {
             val dao = MovieDatabase(getApplication()).movieDao()
-            dao.deleteAllMovies()
-            val result = dao.insertAll(*list.toTypedArray())
+            dao.deleteAllMovies()  // SHOULD BE EDITED
+            val result = dao.insertAll(*list.toTypedArray()) // SHOULD BE EDITED
             var i = 0
             while(i < list.size) {
                 list[i].uuid = result[i].toInt()
@@ -109,7 +108,7 @@ class ListViewModel(application: Application): BaseViewModel(application) {
             }
             moviesRetrieved(list)
         }
-        prefHelper.saveUpdateTime(System.nanoTime()) //Saves current time
+        prefHelper.saveTopMoviesUpdateTime(System.nanoTime()) //Saves current time
 
     }
 

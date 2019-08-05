@@ -104,13 +104,13 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.navigation_top_rated -> {
                 toolbar.title = "Top Rated"
-                //val albumsFragment = AlbumsFragment.newInstance()
-                //openFragment(albumsFragment)
+                navController.setGraph(R.navigation.top_rated_navigation)
+                NavigationUI.setupActionBarWithNavController(this, navController)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_favourites -> {
                 toolbar.title = "Favourites"
-                navController.setGraph(R.navigation.top_rated_navigation)
+                navController.setGraph(R.navigation.favourites_navigation)
                 NavigationUI.setupActionBarWithNavController(this, navController)
                 return@OnNavigationItemSelectedListener true
             }

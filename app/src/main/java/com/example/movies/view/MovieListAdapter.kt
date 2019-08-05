@@ -35,21 +35,6 @@ class MovieListAdapter :
         holder.view.movie = getItem(position)
         holder.view.listener = this  //this means MovieClickListener
 
-        //ERROR
-        // notifyItemInserted(position)
-
-
-        //Old codes
-        /*         holder.view.name.text = movieList[position].movieName
-                   holder.view.raiting.text = "Raiting: "+movieList[position].voteAverage
-                   holder.view.setOnClickListener{
-                   val action = ListFragmentDirections.actionDetailFragment()
-                   action.movieUuid = movieList[position].uuid
-                   Navigation.findNavController(it).navigate(action)
-               }
-
-               holder.view.imageView.loadImage(BASE_URL + movieList[position].imagePath, getProgressDrawable(holder.view.imageView.context))
-           */
     }
 
     override fun onMovieClicked(v: View) {

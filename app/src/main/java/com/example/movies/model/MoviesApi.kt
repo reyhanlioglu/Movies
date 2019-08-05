@@ -10,4 +10,7 @@ interface MoviesApi {
     fun getMovies() : Single<Response>
     //(@Query("search") search: String)
 
+    @GET("3/movie/top_rated?api_key=75bf214782603826f42acbeae4d445c8&language=en-US&page=1")
+    fun getTopRatedMovies() : Single<Response>
+
 }
