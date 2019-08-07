@@ -10,6 +10,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movies.R
+import com.example.movies.viewmodel.FavouritesViewModel
 import com.example.movies.viewmodel.ListViewModel
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.LandingAnimator
@@ -23,7 +24,8 @@ import kotlinx.android.synthetic.main.fragment_list.*
 class ListFragment : Fragment() {
 
     private lateinit var viewModel: ListViewModel
-    private val moviesListAdapter = MovieListAdapter()
+    private lateinit var favouritesViewModel: FavouritesViewModel
+    private val moviesListAdapter = MovieListAdapter(this)
     private lateinit var recyclerView: RecyclerView
 
 
@@ -48,6 +50,7 @@ class ListFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
         viewModel.refresh()
+        favouritesViewModel = ViewModelProviders.of(this).get(FavouritesViewModel::class.java)
 
         moviesList.apply {
             layoutManager = LinearLayoutManager(context)

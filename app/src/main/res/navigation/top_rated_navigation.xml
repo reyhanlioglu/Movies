@@ -9,6 +9,22 @@
             android:id="@+id/topRatedFragment"
             android:name="com.example.movies.view.TopRatedFragment"
             android:label="fragment_top_rated"
-            tools:layout="@layout/fragment_top_rated"/>
+            tools:layout="@layout/fragment_top_rated">
+        <action
+                android:id="@+id/actionDetailFromTopRated"
+                app:destination="@id/detailFragment2"/>
+    </fragment>
+    <fragment
+            android:id="@+id/detailFragment2"
+            android:name="com.example.movies.view.DetailFragment"
+            android:label="DetailFragment">
+        <action
+                android:id="@+id/actionTopRatedFromDetail"
+                app:destination="@id/topRatedFragment"/>
+        <argument
+                android:name="movieUuid"
+                app:argType="integer"
+                android:defaultValue="0"/>
+    </fragment>
 
 </navigation>

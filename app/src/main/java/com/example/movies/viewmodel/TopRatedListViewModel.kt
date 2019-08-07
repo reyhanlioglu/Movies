@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.movies.model.*
 import com.example.movies.util.NotificationsHelper
 import com.example.movies.util.SharedPreferencesHelper
+import com.example.movies.util.setMovieType
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -24,6 +25,7 @@ class TopRatedListViewModel(application: Application): BaseViewModel(application
     val movies = MutableLiveData<List<Movie>>()
     val moviesLoadError = MutableLiveData<Boolean>()
     val loading = MutableLiveData<Boolean>()
+
 
 
     fun refresh() {
@@ -82,7 +84,7 @@ class TopRatedListViewModel(application: Application): BaseViewModel(application
     private fun fetchFromDatabase() {
         loading.value = true
         launch {
-            val movies = MovieDatabase(getApplication()).movieDao().getAllMovies() // SHOULD BE EDITED
+            val movies = MovieDatabase(getApplication()).movieDao().getMoviesWithType("Top Rated") // SHOULD BE EDITED
             moviesRetrieved(movies)
             Toast.makeText(getApplication(), "Top Rated Movies retreived from database", Toast.LENGTH_SHORT).show()
         }
@@ -99,8 +101,12 @@ class TopRatedListViewModel(application: Application): BaseViewModel(application
         //Background operations should be in coroutine
         launch {
             val dao = MovieDatabase(getApplication()).movieDao()
-            dao.deleteAllMovies()  // SHOULD BE EDITED
-            val result = dao.insertAll(*list.toTypedArray()) // SHOULD BE EDITED
+
+            //NEW CODES
+            dao.deleteMoviesWithType("Top Rated")
+            setMovieType("Top Rated", list)
+
+            val result = dao.insertAll(*list.toTypedArray())
             var i = 0
             while(i < list.size) {
                 list[i].uuid = result[i].toInt()

@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_top_rated.*
 class TopRatedFragment : Fragment() {
 
     private lateinit var viewModel: TopRatedListViewModel
-    private val moviesListAdapter = MovieListAdapter()
+    private val moviesListAdapter = MovieListAdapter(this)
     private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(

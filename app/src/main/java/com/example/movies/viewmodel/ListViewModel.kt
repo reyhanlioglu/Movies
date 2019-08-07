@@ -9,6 +9,7 @@ import com.example.movies.model.MoviesApiService
 import com.example.movies.model.Response
 import com.example.movies.util.NotificationsHelper
 import com.example.movies.util.SharedPreferencesHelper
+import com.example.movies.util.setMovieType
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -27,6 +28,7 @@ class ListViewModel(application: Application): BaseViewModel(application) {
     val movies = MutableLiveData<List<Movie>>()
     val moviesLoadError = MutableLiveData<Boolean>()
     val loading = MutableLiveData<Boolean>()
+
 
     fun refresh() {
         checkCacheDuration()
@@ -82,7 +84,7 @@ class ListViewModel(application: Application): BaseViewModel(application) {
     private fun fetchFromDatabase() {
         loading.value = true
         launch {
-            val movies = MovieDatabase(getApplication()).movieDao().getAllMovies()
+            val movies = MovieDatabase(getApplication()).movieDao().getMoviesWithType("Popular")
             moviesRetrieved(movies)
             Toast.makeText(getApplication(), "Movies retreived from database", Toast.LENGTH_SHORT).show()
         }
@@ -100,7 +102,11 @@ class ListViewModel(application: Application): BaseViewModel(application) {
         //Background operations should be in coroutine
         launch {
             val dao = MovieDatabase(getApplication()).movieDao()
-            dao.deleteAllMovies()
+
+            dao.deleteMoviesWithType("Popular")
+            setMovieType("Popular", list)
+
+           // dao.deleteAllMovies()
             val result = dao.insertAll(*list.toTypedArray())
             var i = 0
             while(i < list.size) {

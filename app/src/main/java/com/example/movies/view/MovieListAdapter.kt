@@ -6,25 +6,39 @@ import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.ViewPropertyAnimatorListener
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movies.R
 import com.example.movies.databinding.ItemMovieBinding
+import com.example.movies.model.FavouriteMovie
 import com.example.movies.model.Movie
+import com.example.movies.viewmodel.FavouritesViewModel
 import jp.wasabeef.recyclerview.animators.holder.AnimateViewHolder
 import kotlinx.android.synthetic.main.item_movie.view.*
 
-class MovieListAdapter :
+class MovieListAdapter(fragment: Fragment) :
     ListAdapter<Movie, MovieListAdapter.MovieViewHolder>(MovieAsync()),
-    MovieClickListener {
+    MovieClickListener, FavouriteButtonListener {
+
+    private var fragment: Fragment
+
+    init {
+        this.fragment = fragment
+    }
+
+    private lateinit var favouritesViewModel: FavouritesViewModel
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         //  val view = inflater.inflate(R.layout.item_movie, parent, false)
         val view = DataBindingUtil.inflate<ItemMovieBinding>(inflater, R.layout.item_movie, parent, false)
 
+        favouritesViewModel = ViewModelProviders.of(fragment).get(FavouritesViewModel::class.java)
         // ERROR
         //notifyItemRangeInserted(0, movieList.size-1)
 
@@ -34,14 +48,22 @@ class MovieListAdapter :
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.view.movie = getItem(position)
         holder.view.listener = this  //this means MovieClickListener
-
+        holder.view.listenerFav = this
     }
 
     override fun onMovieClicked(v: View) {
         val uuid = v.movieId.text.toString().toInt()
-        val action = ListFragmentDirections.actionDetailFragment()
-        action.movieUuid = uuid     //put int into bundle and get it from detail fragment
-        Navigation.findNavController(v).navigate(action)
+        val movieType = v.movieType.text.toString()
+        if (movieType.equals("Popular")) {
+            val action = ListFragmentDirections.actionDetailFragment()
+            action.movieUuid = uuid     //put int into bundle and get it from detail fragment
+            Navigation.findNavController(v).navigate(action)
+        } else if (movieType.equals("Top Rated")) {
+            val action = TopRatedFragmentDirections.actionDetailFromTopRated()
+            action.movieUuid = uuid     //put int into bundle and get it from detail fragment
+            Navigation.findNavController(v).navigate(action)
+        }
+
     }
 
 
@@ -83,6 +105,21 @@ class MovieListAdapter :
 
         override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
             return oldItem == newItem
+        }
+
+    }
+
+    override fun onFavouriteButtonClicked(view: View, movie: Movie) {
+        val favouriteMovie = FavouriteMovie(movie)
+        println("Current movie is " + movie.movieName)
+        if (favouritesViewModel.checkWhetherMovieExist(favouriteMovie)) {
+            favouritesViewModel.removeMovieFromFavourites(favouriteMovie)
+            view.setBackgroundResource(R.drawable.heart_black)
+            println("Favorilerden kaldırıldı")
+        } else {
+            favouritesViewModel.addMovieToFavourites(favouriteMovie)
+            view.setBackgroundResource(R.drawable.heart_red)
+            println("Favorilere eklendi")
         }
 
     }
