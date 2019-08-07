@@ -27,7 +27,6 @@ class TopRatedListViewModel(application: Application): BaseViewModel(application
     val loading = MutableLiveData<Boolean>()
 
 
-
     fun refresh() {
         checkCacheDuration()
         val updateTime = prefHelper.getTopMoviesUpdateTime()
@@ -103,7 +102,7 @@ class TopRatedListViewModel(application: Application): BaseViewModel(application
             val dao = MovieDatabase(getApplication()).movieDao()
 
             //NEW CODES
-            dao.deleteMoviesWithType("Top Rated")
+            dao.deleteMoviesWithType("Top Rated")  // SHOULD BE EDITED
             setMovieType("Top Rated", list)
 
             val result = dao.insertAll(*list.toTypedArray())

@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.fragment_list.*
 class ListFragment : Fragment() {
 
     private lateinit var viewModel: ListViewModel
-    private lateinit var favouritesViewModel: FavouritesViewModel
     private val moviesListAdapter = MovieListAdapter(this)
     private lateinit var recyclerView: RecyclerView
 
@@ -50,7 +49,6 @@ class ListFragment : Fragment() {
 
         viewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
         viewModel.refresh()
-        favouritesViewModel = ViewModelProviders.of(this).get(FavouritesViewModel::class.java)
 
         moviesList.apply {
             layoutManager = LinearLayoutManager(context)

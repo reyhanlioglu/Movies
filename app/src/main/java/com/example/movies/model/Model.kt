@@ -45,6 +45,17 @@ data class Movie(
     var movieType: String?
 
 ) {
+    constructor(movie: FavouriteMovie) : this(
+        movie.movieId,
+        movie.movieName,
+        movie.overview,
+        movie.releaseDate,
+        movie.voteAverage,
+        movie.language,
+        movie.imagePath,
+        movie.movieType
+    )
+
     @PrimaryKey(autoGenerate = true)
     var uuid: Int = 0
 }

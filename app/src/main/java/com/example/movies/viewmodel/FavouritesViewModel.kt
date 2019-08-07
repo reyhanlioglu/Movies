@@ -1,8 +1,10 @@
 package com.example.movies.viewmodel
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.example.movies.model.FavouriteMovie
+import com.example.movies.model.Movie
 import com.example.movies.model.MovieDatabase
 import kotlinx.coroutines.launch
 
@@ -11,16 +13,31 @@ class FavouritesViewModel(application: Application) : BaseViewModel(application)
     var favouriteMoviesLiveData = MutableLiveData<MutableList<FavouriteMovie>>()
     var favouriteMovieDao = MovieDatabase(getApplication()).favouriteMovieDao()
 
+    val movies = MutableLiveData<List<Movie>>()
+    val moviesLoadError = MutableLiveData<Boolean>()
+    val loading = MutableLiveData<Boolean>()
+
     init {
         launch {
-            //  println("DELETE UUID: "+movie.uuid)
-            // println("REMOVE MOVIE WITH ID: "+movie.movieId)
+
             //SEALED CLASS ILE DUZENLEMELER YAP
             (favouriteMovieDao.getAllMovies() as MutableList<FavouriteMovie>?).let { movieList ->
                 favouriteMoviesLiveData.value = movieList
             }
         }
     }
+
+    fun fetchFromDatabase() {
+        loading.value = true
+        moviesRetrieved()
+
+    }
+
+
+
+
+
+
 
     fun addMovieToFavourites(movie: FavouriteMovie) {
         storeFavouriteMovieLocally(movie)
@@ -42,12 +59,15 @@ class FavouritesViewModel(application: Application) : BaseViewModel(application)
         launch {
             favouriteMoviesLiveData.value =
                 MovieDatabase(getApplication()).favouriteMovieDao().getAllMovies() as ArrayList<FavouriteMovie>?
+
+            moviesLoadError.value = false
+            loading.value = false
         }
 
     }
 
     private fun storeFavouriteMovieLocally(favouriteMovie: FavouriteMovie) {
-        //Background operations should be in coroutine
+
         launch {
 
             if (!checkWhetherMovieExist(favouriteMovie)) {
@@ -64,7 +84,7 @@ class FavouritesViewModel(application: Application) : BaseViewModel(application)
     }
 
     fun checkWhetherMovieExist(movie: FavouriteMovie): Boolean {
-        // moviesRetrieved()
+
         return if (favouriteMoviesLiveData.value != null) {
             favouriteMoviesLiveData.value!!.contains(movie)
         } else

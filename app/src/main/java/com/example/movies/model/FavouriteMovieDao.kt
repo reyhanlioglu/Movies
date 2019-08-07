@@ -12,9 +12,6 @@ interface FavouriteMovieDao {
     // suspend means that run whenever processing power is available for this operation
 
 
-    // @Insert
-    // suspend fun insertTopRatedMovies(vararg  movies: Movie): List<Long>
-
     @Query("SELECT * FROM favouritemovie")
     suspend fun getAllMovies(): List<FavouriteMovie>
 

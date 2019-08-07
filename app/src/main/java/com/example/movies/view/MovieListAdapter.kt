@@ -50,20 +50,19 @@ class MovieListAdapter(fragment: Fragment) :
         holder.view.listener = this  //this means MovieClickListener
         holder.view.listenerFav = this
 
-        val favouriteMovie = FavouriteMovie(getItem(position))
+        refreshFavouriteIcons(holder, position)
+    }
 
+    private fun refreshFavouriteIcons(holder: MovieViewHolder, position: Int) {
+        val favouriteMovie = FavouriteMovie(getItem(position))
 
         favouritesViewModel.checkWhetherMovieExist(favouriteMovie)?.let {
             if (it) {
                 holder.view.favouriteButton.setBackgroundResource(R.drawable.heart_red)
-
             } else {
                 holder.view.favouriteButton.setBackgroundResource(R.drawable.heart_black)
-
             }
         }
-
-
     }
 
     override fun onMovieClicked(v: View) {
