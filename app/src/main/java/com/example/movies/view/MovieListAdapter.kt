@@ -39,8 +39,8 @@ class MovieListAdapter(fragment: Fragment) :
         val view = DataBindingUtil.inflate<ItemMovieBinding>(inflater, R.layout.item_movie, parent, false)
 
         favouritesViewModel = ViewModelProviders.of(fragment).get(FavouritesViewModel::class.java)
-        // ERROR
-        //notifyItemRangeInserted(0, movieList.size-1)
+
+        favouritesViewModel.moviesRetrieved()
 
         return MovieViewHolder(view)
     }
@@ -49,6 +49,21 @@ class MovieListAdapter(fragment: Fragment) :
         holder.view.movie = getItem(position)
         holder.view.listener = this  //this means MovieClickListener
         holder.view.listenerFav = this
+
+        val favouriteMovie = FavouriteMovie(getItem(position))
+
+
+        favouritesViewModel.checkWhetherMovieExist(favouriteMovie)?.let {
+            if (it) {
+                holder.view.favouriteButton.setBackgroundResource(R.drawable.heart_red)
+
+            } else {
+                holder.view.favouriteButton.setBackgroundResource(R.drawable.heart_black)
+
+            }
+        }
+
+
     }
 
     override fun onMovieClicked(v: View) {
@@ -106,20 +121,23 @@ class MovieListAdapter(fragment: Fragment) :
         override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
             return oldItem == newItem
         }
-
     }
 
     override fun onFavouriteButtonClicked(view: View, movie: Movie) {
         val favouriteMovie = FavouriteMovie(movie)
+
         println("Current movie is " + movie.movieName)
-        if (favouritesViewModel.checkWhetherMovieExist(favouriteMovie)) {
-            favouritesViewModel.removeMovieFromFavourites(favouriteMovie)
-            view.setBackgroundResource(R.drawable.heart_black)
-            println("Favorilerden kaldırıldı")
-        } else {
-            favouritesViewModel.addMovieToFavourites(favouriteMovie)
-            view.setBackgroundResource(R.drawable.heart_red)
-            println("Favorilere eklendi")
+
+        favouritesViewModel.checkWhetherMovieExist(favouriteMovie)?.let {
+            if (it) {
+                favouritesViewModel.removeMovieFromFavourites(favouriteMovie)
+                view.setBackgroundResource(R.drawable.heart_black)
+                println("Favorilerden kaldırıldı")
+            } else {
+                favouritesViewModel.addMovieToFavourites(favouriteMovie)
+                view.setBackgroundResource(R.drawable.heart_red)
+                println("Favorilere eklendi")
+            }
         }
 
     }

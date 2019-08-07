@@ -3,42 +3,45 @@ package com.example.movies.viewmodel
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.example.movies.model.FavouriteMovie
-import com.example.movies.model.Movie
 import com.example.movies.model.MovieDatabase
-import com.example.movies.util.setMovieType
 import kotlinx.coroutines.launch
 
-class FavouritesViewModel (application: Application): BaseViewModel(application) {
+class FavouritesViewModel(application: Application) : BaseViewModel(application) {
 
-    var favouriteMovies = ArrayList<FavouriteMovie>()
-    val favouriteMoviesLiveData = MutableLiveData<List<FavouriteMovie>>()
+    var favouriteMoviesLiveData = MutableLiveData<MutableList<FavouriteMovie>>()
+    var favouriteMovieDao = MovieDatabase(getApplication()).favouriteMovieDao()
 
-
-    fun addMovieToFavourites(movie: FavouriteMovie) {
-        favouriteMovies.add(movie) //DELETE
-        favouriteMoviesLiveData.value = favouriteMovies //DELETE
-        storeFavouriteMovieLocally(movie)
-    }
-
-    fun removeMovieFromFavourites(movie: FavouriteMovie) {
-
-        if(checkWhetherMovieExist(movie)){
-            launch {
-                favouriteMovies.remove(movie)
-                favouriteMoviesLiveData.value = favouriteMovies
-               // println("UUID: "+movie.uuid)
-                val dao = MovieDatabase(getApplication()).favouriteMovieDao()
-                dao.deleteMovieWithUuid(movie.uuid)
+    init {
+        launch {
+            //  println("DELETE UUID: "+movie.uuid)
+            // println("REMOVE MOVIE WITH ID: "+movie.movieId)
+            //SEALED CLASS ILE DUZENLEMELER YAP
+            (favouriteMovieDao.getAllMovies() as MutableList<FavouriteMovie>?).let { movieList ->
+                favouriteMoviesLiveData.value = movieList
             }
         }
     }
 
+    fun addMovieToFavourites(movie: FavouriteMovie) {
+        storeFavouriteMovieLocally(movie)
+    }
+
+    fun removeMovieFromFavourites(movie: FavouriteMovie) {
+        if (checkWhetherMovieExist(movie)) {
+            favouriteMoviesLiveData.value?.remove(movie)
+            launch {
+                favouriteMovieDao.deleteMovieWithId(movie.movieId!!.toInt())
+            }
+            println("Total size is " + favouriteMoviesLiveData.value?.size)
+        }
+
+    }
 
 
-    private fun moviesRetrieved() {
+    fun moviesRetrieved() {
         launch {
-            favouriteMovies = MovieDatabase(getApplication()).favouriteMovieDao().getAllMovies() as ArrayList<FavouriteMovie>
-            favouriteMoviesLiveData.value = MovieDatabase(getApplication()).favouriteMovieDao().getAllMovies()
+            favouriteMoviesLiveData.value =
+                MovieDatabase(getApplication()).favouriteMovieDao().getAllMovies() as ArrayList<FavouriteMovie>?
         }
 
     }
@@ -46,28 +49,31 @@ class FavouritesViewModel (application: Application): BaseViewModel(application)
     private fun storeFavouriteMovieLocally(favouriteMovie: FavouriteMovie) {
         //Background operations should be in coroutine
         launch {
-            val dao = MovieDatabase(getApplication()).favouriteMovieDao()
 
-            val result = dao.insertAll(favouriteMovie)
+            if (!checkWhetherMovieExist(favouriteMovie)) {
 
-            favouriteMovie.uuid = result[0].toInt()
+                val result = favouriteMovieDao.insertAll(favouriteMovie)
+                favouriteMovie.uuid = result[0].toInt()
+                println("ID is " + favouriteMovie.movieId)
+                favouriteMoviesLiveData.value?.add(favouriteMovie)
 
-            moviesRetrieved()
+            } else
+                println("Movie is already in database")
+
         }
     }
 
     fun checkWhetherMovieExist(movie: FavouriteMovie): Boolean {
-        moviesRetrieved()
-        return favouriteMovies.contains(movie)
+        // moviesRetrieved()
+        return if (favouriteMoviesLiveData.value != null) {
+            favouriteMoviesLiveData.value!!.contains(movie)
+        } else
+            false
     }
-
-
-
-
 
     override fun onCleared() {
         super.onCleared()
-     //   disposable.clear()
+        //   disposable.clear()
     }
 
 }

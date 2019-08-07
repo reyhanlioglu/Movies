@@ -27,8 +27,8 @@ interface FavouriteMovieDao {
     suspend fun deleteAllFavouriteMovies()
 
 
-    @Query("DELETE FROM favouritemovie WHERE uuid = :uuid")
-    suspend fun deleteMovieWithUuid(uuid: Int)
+    @Query("DELETE FROM favouritemovie WHERE id = :movieId")
+    suspend fun deleteMovieWithId(movieId: Int)
 
 
 
