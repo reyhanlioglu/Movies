@@ -79,8 +79,24 @@ class FavouritesFragment : Fragment() {
             }
         })
 
+
+        viewModel.moviesLoadError.observe(this, Observer { isError ->
+            isError?.let {
+                listErrorFavourites.visibility = if (it) View.VISIBLE else View.GONE
+            }
+
+        })
+
+        viewModel.loading.observe(this, Observer { isLoading ->
+            isLoading?.let {
+                loadingViewFavourites.visibility = if (it) View.VISIBLE else View.GONE
+                if (it) {
+                    listErrorFavourites.visibility = View.GONE
+                    favouritesList.visibility = View.GONE
+                }
+            }
+
+        })
     }
-
-
 
 }
