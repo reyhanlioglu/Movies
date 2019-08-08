@@ -28,9 +28,6 @@ class MainActivity : AppCompatActivity() {
         navController.setGraph(R.navigation.movies_navigation)
         NavigationUI.setupActionBarWithNavController(this, navController)
 
-        //Bottom Navigation Controller
-//        bottomNavController = Navigation.findNavController(this, R.id.bottomNavView)
-//        NavigationUI.setupActionBarWithNavController(this, bottomNavController)
 
         toolbar = supportActionBar!!
         val bottomNavigation: BottomNavigationView = bottomNavView as BottomNavigationView

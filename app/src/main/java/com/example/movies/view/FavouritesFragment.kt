@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -27,6 +28,7 @@ class FavouritesFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         moviesListAdapter = MovieListAdapter(this)
+        (activity as AppCompatActivity).supportActionBar?.title = "My Favourite Movies"
     }
 
     override fun onCreateView(
@@ -40,6 +42,7 @@ class FavouritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
 
         // INSPECT (NEW LIBRARY OPERATIONS)
@@ -74,17 +77,15 @@ class FavouritesFragment : Fragment() {
                     i++
                 }
 
+                if(it.size == 0) {
+                    listErrorFavourites.visibility = View.VISIBLE
+                }
+
                 moviesListAdapter.submitList(arrayList)
             }
         })
 
 
-        viewModel.moviesLoadError.observe(this, Observer { isError ->
-            isError?.let {
-                listErrorFavourites.visibility = if (it) View.VISIBLE else View.GONE
-            }
-
-        })
 
         viewModel.loading.observe(this, Observer { isLoading ->
             isLoading?.let {

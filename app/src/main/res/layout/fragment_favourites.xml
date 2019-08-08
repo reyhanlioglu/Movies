@@ -31,7 +31,7 @@
                 android:id="@+id/listErrorFavourites"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="An error occured while loading data!"
+                android:text="Your favourite movie list is empty !"
 
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="8dp"
@@ -41,7 +41,8 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintBottom_toBottomOf="@+id/favouritesList"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toTopOf="@+id/favouritesList"/>
+                app:layout_constraintTop_toTopOf="@+id/favouritesList"
+                android:visibility="gone"/>
 
         <ProgressBar
                 android:id="@+id/loadingViewFavourites"

@@ -3,6 +3,7 @@ package com.example.movies.view
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,10 +18,7 @@ import jp.wasabeef.recyclerview.animators.LandingAnimator
 import kotlinx.android.synthetic.main.fragment_list.*
 
 
-/**
- * A simple [Fragment] subclass.
- *
- */
+
 class PopularFragment : Fragment() {
 
     private lateinit var viewModel: ListViewModel
@@ -30,6 +28,8 @@ class PopularFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         moviesListAdapter = MovieListAdapter(this)
+
+        (activity as AppCompatActivity).supportActionBar?.title = "Popular Movies"
     }
 
 
