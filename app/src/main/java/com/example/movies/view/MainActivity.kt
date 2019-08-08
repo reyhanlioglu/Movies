@@ -115,4 +115,20 @@ class MainActivity : AppCompatActivity() {
         false
     }
 
+ /*   override fun onBackPressed() {
+
+        var f = supportFragmentManager.findFragmentById(R.id.fragment)
+
+        if (f is DetailFragment) {
+            //GO back
+            val action = DetailFragmentDirections.actionListFragment()
+
+            Navigation.findNavController(f.view).navigate(action)
+
+        }
+        else {
+            super.onBackPressed()
+        }
+    }
+*/
 }

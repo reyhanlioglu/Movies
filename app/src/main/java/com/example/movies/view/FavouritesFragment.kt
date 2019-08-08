@@ -28,7 +28,6 @@ class FavouritesFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         moviesListAdapter = MovieListAdapter(this)
-        (activity as AppCompatActivity).supportActionBar?.title = "My Favourite Movies"
     }
 
     override fun onCreateView(
@@ -42,8 +41,6 @@ class FavouritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
         // INSPECT (NEW LIBRARY OPERATIONS)
         recyclerView = favouritesList

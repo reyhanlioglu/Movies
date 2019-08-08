@@ -9,10 +9,13 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.telephony.SmsManager
 import android.view.*
+import androidx.activity.addCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -26,21 +29,18 @@ import com.example.movies.model.SmsInfo
 import com.example.movies.viewmodel.DetailViewModel
 
 
-/**
- * A simple [Fragment] subclass.
- *
- */
+
 class DetailFragment : Fragment() {
 
     private lateinit var viewModel: DetailViewModel
     private var movieUuid = 0
-    private var movieId = 0
     private var fromFavourite = false
 
     private lateinit var dataBinding: FragmentDetailBinding
     private var sendSmsStarted = false
 
     private var currentMovie: Movie? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

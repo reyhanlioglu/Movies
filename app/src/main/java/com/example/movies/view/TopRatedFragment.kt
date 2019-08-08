@@ -30,7 +30,6 @@ class TopRatedFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         moviesListAdapter = MovieListAdapter(this)
-        (activity as AppCompatActivity).supportActionBar?.title = "Top Rated Movies"
     }
 
     override fun onCreateView(
@@ -44,8 +43,6 @@ class TopRatedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
         // INSPECT (NEW LIBRARY OPERATIONS)
         recyclerView = topRatedList

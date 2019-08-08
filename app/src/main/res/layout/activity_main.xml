@@ -17,6 +17,7 @@
             app:layout_constraintBottom_toTopOf="@+id/bottomNavView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:defaultNavHost = "true"
             />
 
 

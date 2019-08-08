@@ -7,12 +7,13 @@
     <fragment
             android:id="@+id/listFragment"
             android:name="com.example.movies.view.PopularFragment"
-            android:label="ListFragment">
+            android:label="Popular Movies">
         <action
                 android:id="@+id/actionDetailFragment"
                 app:destination="@id/detailFragment"
                 app:enterAnim="@anim/nav_default_enter_anim"
-                app:exitAnim="@anim/nav_default_exit_anim"/>
+                app:exitAnim="@anim/nav_default_exit_anim"
+                />
         <action
                 android:id="@+id/actionSettings"
                 app:destination="@id/settingsFragment"/>
@@ -20,16 +21,11 @@
     <fragment
             android:id="@+id/detailFragment"
             android:name="com.example.movies.view.DetailFragment"
-            android:label="DetailFragment">
-        <action
-                android:id="@+id/actionListFragment"
-                app:destination="@id/listFragment"
-                app:enterAnim="@anim/nav_default_enter_anim"
-                app:exitAnim="@anim/nav_default_exit_anim"/>
+            android:label="Movie Details">
         <argument
-            android:name="movieUuid"
-            android:defaultValue="0"
-            app:argType="integer" >
+                android:name="movieUuid"
+                android:defaultValue="0"
+                app:argType="integer">
 
         </argument>
         <argument
@@ -40,5 +36,5 @@
     <fragment
             android:id="@+id/settingsFragment"
             android:name="com.example.movies.view.SettingsFragment"
-            android:label="SettingsFragment"/>
+            android:label="Settings"/>
 </navigation>

@@ -28,8 +28,6 @@ class PopularFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         moviesListAdapter = MovieListAdapter(this)
-
-        (activity as AppCompatActivity).supportActionBar?.title = "Popular Movies"
     }
 
 

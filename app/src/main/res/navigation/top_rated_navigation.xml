@@ -8,7 +8,7 @@
     <fragment
             android:id="@+id/topRatedFragment"
             android:name="com.example.movies.view.TopRatedFragment"
-            android:label="fragment_top_rated"
+            android:label="Top Rated Movies"
             tools:layout="@layout/fragment_top_rated">
         <action
                 android:id="@+id/actionDetailFromTopRated"
@@ -17,7 +17,7 @@
     <fragment
             android:id="@+id/detailFragment2"
             android:name="com.example.movies.view.DetailFragment"
-            android:label="DetailFragment">
+            android:label="Movie Details">
         <action
                 android:id="@+id/actionTopRatedFromDetail"
                 app:destination="@id/topRatedFragment"/>

@@ -18,7 +18,6 @@ import com.example.movies.model.FavouriteMovie
 import com.example.movies.model.Movie
 import com.example.movies.viewmodel.FavouritesViewModel
 import jp.wasabeef.recyclerview.animators.holder.AnimateViewHolder
-import kotlinx.android.synthetic.main.item_movie.*
 import kotlinx.android.synthetic.main.item_movie.view.*
 
 class MovieListAdapter(var fragment: Fragment) :
@@ -57,30 +56,26 @@ class MovieListAdapter(var fragment: Fragment) :
     }
 
     override fun onMovieClicked(v: View) {
-        val uuid = v.movieId.text.toString().toInt()
         val id = v.movieId.text.toString().toInt()
-        val movieType = v.movieType.text.toString()
-        //if (movieType.equals("Popular")) {
+
         if (fragment is PopularFragment) {
             val action = PopularFragmentDirections.actionDetailFragment()
-            action.movieUuid = uuid     //put int into bundle and get it from detail fragment
+            action.movieUuid = id
             action.fromFavourite = false
             Navigation.findNavController(v).navigate(action)
         }
-        //else if (movieType.equals("Top Rated")) {
         else if (fragment is TopRatedFragment) {
             val action = TopRatedFragmentDirections.actionDetailFromTopRated()
-            action.movieUuid = uuid     //put int into bundle and get it from detail fragment
+            action.movieUuid = id
             action.fromFavourite = false
             Navigation.findNavController(v).navigate(action)
-        } else if(fragment is FavouritesFragment ) {
+        }
+        else if(fragment is FavouritesFragment ) {
             val action = FavouritesFragmentDirections.actionDetailFromFavourites()
-            println("INSIDE : UUID= "+uuid)
-            action.movieUuid = uuid     //put int into bundle and get it from detail fragment
+            action.movieUuid = id
             action.fromFavourite = true
             Navigation.findNavController(v).navigate(action)
         }
-
 
     }
 
