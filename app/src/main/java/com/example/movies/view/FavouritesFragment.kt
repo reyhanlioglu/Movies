@@ -2,32 +2,32 @@ package com.example.movies.view
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.movies.R
-import com.example.movies.model.FavouriteMovie
 import com.example.movies.model.Movie
 import com.example.movies.viewmodel.FavouritesViewModel
-import com.example.movies.viewmodel.TopRatedListViewModel
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.LandingAnimator
 import kotlinx.android.synthetic.main.fragment_favourites.*
-import kotlinx.android.synthetic.main.fragment_top_rated.*
 
 
 class FavouritesFragment : Fragment() {
 
     private lateinit var viewModel: FavouritesViewModel
-    private val moviesListAdapter = MovieListAdapter(this)
+    private lateinit var moviesListAdapter: MovieListAdapter
     private lateinit var recyclerView: RecyclerView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        moviesListAdapter = MovieListAdapter(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +48,6 @@ class FavouritesFragment : Fragment() {
 
 
         viewModel = ViewModelProviders.of(this).get(FavouritesViewModel::class.java)
-        viewModel.fetchFromDatabase()
 
         favouritesList.apply {
             layoutManager = LinearLayoutManager(context)
@@ -69,13 +68,13 @@ class FavouritesFragment : Fragment() {
 
                 var arrayList: ArrayList<Movie> = arrayListOf()
 
-                var i=0
-                while(i<it.size) {
+                var i = 0
+                while (i < it.size) {
                     arrayList.add(Movie(it[i]))
                     i++
                 }
 
-                moviesListAdapter.submitList( arrayList)
+                moviesListAdapter.submitList(arrayList)
             }
         })
 

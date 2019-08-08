@@ -21,11 +21,16 @@ import kotlinx.android.synthetic.main.fragment_list.*
  * A simple [Fragment] subclass.
  *
  */
-class ListFragment : Fragment() {
+class PopularFragment : Fragment() {
 
     private lateinit var viewModel: ListViewModel
-    private val moviesListAdapter = MovieListAdapter(this)
+    private lateinit var moviesListAdapter: MovieListAdapter
     private lateinit var recyclerView: RecyclerView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        moviesListAdapter = MovieListAdapter(this)
+    }
 
 
     override fun onCreateView(
@@ -104,7 +109,7 @@ class ListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionSettings -> {
-                view?.let { Navigation.findNavController(it).navigate(ListFragmentDirections.actionSettings()) }
+                view?.let { Navigation.findNavController(it).navigate(PopularFragmentDirections.actionSettings()) }
             }
         }
         return super.onOptionsItemSelected(item)

@@ -6,7 +6,7 @@
 
     <fragment
             android:id="@+id/listFragment"
-            android:name="com.example.movies.view.ListFragment"
+            android:name="com.example.movies.view.PopularFragment"
             android:label="ListFragment">
         <action
                 android:id="@+id/actionDetailFragment"

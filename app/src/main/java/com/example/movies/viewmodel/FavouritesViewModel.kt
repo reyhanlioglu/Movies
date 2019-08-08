@@ -1,7 +1,6 @@
 package com.example.movies.viewmodel
 
 import android.app.Application
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.example.movies.model.FavouriteMovie
 import com.example.movies.model.Movie
@@ -24,20 +23,10 @@ class FavouritesViewModel(application: Application) : BaseViewModel(application)
             (favouriteMovieDao.getAllMovies() as MutableList<FavouriteMovie>?).let { movieList ->
                 favouriteMoviesLiveData.value = movieList
             }
+            moviesLoadError.value = false
+            loading.value = false
         }
     }
-
-    fun fetchFromDatabase() {
-        loading.value = true
-        moviesRetrieved()
-
-    }
-
-
-
-
-
-
 
     fun addMovieToFavourites(movie: FavouriteMovie) {
         storeFavouriteMovieLocally(movie)
@@ -84,11 +73,11 @@ class FavouritesViewModel(application: Application) : BaseViewModel(application)
     }
 
     fun checkWhetherMovieExist(movie: FavouriteMovie): Boolean {
-
         return if (favouriteMoviesLiveData.value != null) {
             favouriteMoviesLiveData.value!!.contains(movie)
-        } else
+        } else {
             false
+        }
     }
 
     override fun onCleared() {

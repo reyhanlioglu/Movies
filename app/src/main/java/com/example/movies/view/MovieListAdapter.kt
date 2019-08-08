@@ -20,27 +20,17 @@ import com.example.movies.viewmodel.FavouritesViewModel
 import jp.wasabeef.recyclerview.animators.holder.AnimateViewHolder
 import kotlinx.android.synthetic.main.item_movie.view.*
 
-class MovieListAdapter(fragment: Fragment) :
+class MovieListAdapter(var fragment: Fragment) :
     ListAdapter<Movie, MovieListAdapter.MovieViewHolder>(MovieAsync()),
     MovieClickListener, FavouriteButtonListener {
 
-    private var fragment: Fragment
-
-    init {
-        this.fragment = fragment
-    }
-
-    private lateinit var favouritesViewModel: FavouritesViewModel
-
+    private var favouritesViewModel: FavouritesViewModel =
+        ViewModelProviders.of(fragment).get(FavouritesViewModel::class.java)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         //  val view = inflater.inflate(R.layout.item_movie, parent, false)
         val view = DataBindingUtil.inflate<ItemMovieBinding>(inflater, R.layout.item_movie, parent, false)
-
-        favouritesViewModel = ViewModelProviders.of(fragment).get(FavouritesViewModel::class.java)
-
-        favouritesViewModel.moviesRetrieved()
 
         return MovieViewHolder(view)
     }
@@ -69,7 +59,7 @@ class MovieListAdapter(fragment: Fragment) :
         val uuid = v.movieId.text.toString().toInt()
         val movieType = v.movieType.text.toString()
         if (movieType.equals("Popular")) {
-            val action = ListFragmentDirections.actionDetailFragment()
+            val action = PopularFragmentDirections.actionDetailFragment()
             action.movieUuid = uuid     //put int into bundle and get it from detail fragment
             Navigation.findNavController(v).navigate(action)
         } else if (movieType.equals("Top Rated")) {
@@ -127,7 +117,7 @@ class MovieListAdapter(fragment: Fragment) :
 
         println("Current movie is " + movie.movieName)
 
-        favouritesViewModel.checkWhetherMovieExist(favouriteMovie)?.let {
+        favouritesViewModel.checkWhetherMovieExist(favouriteMovie).let {
             if (it) {
                 favouritesViewModel.removeMovieFromFavourites(favouriteMovie)
                 view.setBackgroundResource(R.drawable.heart_black)

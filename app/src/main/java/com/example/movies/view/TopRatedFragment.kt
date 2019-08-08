@@ -23,8 +23,13 @@ import kotlinx.android.synthetic.main.fragment_top_rated.*
 class TopRatedFragment : Fragment() {
 
     private lateinit var viewModel: TopRatedListViewModel
-    private val moviesListAdapter = MovieListAdapter(this)
+    private lateinit var moviesListAdapter: MovieListAdapter
     private lateinit var recyclerView: RecyclerView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        moviesListAdapter = MovieListAdapter(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
