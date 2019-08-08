@@ -9,6 +9,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -57,24 +60,29 @@ class MovieListAdapter(var fragment: Fragment) :
 
     override fun onMovieClicked(v: View) {
         val id = v.movieId.text.toString().toInt()
+        val extras = FragmentNavigatorExtras(
+            v.imageView to "imageView"
+        )
 
         if (fragment is PopularFragment) {
             val action = PopularFragmentDirections.actionDetailFragment()
             action.movieUuid = id
             action.fromFavourite = false
-            Navigation.findNavController(v).navigate(action)
+            Navigation.findNavController(v).navigate(action,extras)
+            //findNavController(v).navigate(R.id.actionDetailFromFavourites, null, null, extras)
+
         }
         else if (fragment is TopRatedFragment) {
             val action = TopRatedFragmentDirections.actionDetailFromTopRated()
             action.movieUuid = id
             action.fromFavourite = false
-            Navigation.findNavController(v).navigate(action)
+            Navigation.findNavController(v).navigate(action, extras)
         }
         else if(fragment is FavouritesFragment ) {
             val action = FavouritesFragmentDirections.actionDetailFromFavourites()
             action.movieUuid = id
             action.fromFavourite = true
-            Navigation.findNavController(v).navigate(action)
+            Navigation.findNavController(v).navigate(action, extras)
         }
 
     }
