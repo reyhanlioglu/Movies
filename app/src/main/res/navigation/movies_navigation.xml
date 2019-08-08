@@ -32,6 +32,10 @@
             app:argType="integer" >
 
         </argument>
+        <argument
+                android:name="fromFavourite"
+                app:argType="boolean"
+                android:defaultValue="false"/>
     </fragment>
     <fragment
             android:id="@+id/settingsFragment"

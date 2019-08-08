@@ -23,8 +23,8 @@ interface MovieDao {
     @Query("SELECT * FROM movie WHERE type = :type ")
     suspend fun getMoviesWithType(type: String): List<Movie>
 
-    @Query("SELECT * FROM movie WHERE uuid = :movieId")
-    suspend fun getMovie(movieId: Int): Movie
+    @Query("SELECT * FROM movie WHERE id = :id")
+    suspend fun getMovie(id: Int): Movie
 
     @Query("DELETE FROM movie")
     suspend fun deleteAllMovies()

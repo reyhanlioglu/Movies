@@ -16,8 +16,8 @@ interface FavouriteMovieDao {
     suspend fun getAllMovies(): List<FavouriteMovie>
 
 
-    @Query("SELECT * FROM favouritemovie WHERE uuid = :uuid")
-    suspend fun getMovie(uuid: Int): FavouriteMovie
+    @Query("SELECT * FROM favouritemovie WHERE id = :id")
+    suspend fun getMovie(id: Int): FavouriteMovie
 
 
     @Query("DELETE FROM favouritemovie")

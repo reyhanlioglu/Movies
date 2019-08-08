@@ -25,6 +25,10 @@
                 android:name="movieUuid"
                 app:argType="integer"
                 android:defaultValue="0"/>
+        <argument
+                android:name="fromFavourite"
+                app:argType="boolean"
+                android:defaultValue="false"/>
     </fragment>
 
 </navigation>

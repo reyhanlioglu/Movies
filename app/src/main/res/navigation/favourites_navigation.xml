@@ -9,5 +9,25 @@
             android:id="@+id/favouritesFragment"
             android:name="com.example.movies.view.FavouritesFragment"
             android:label="fragment_favourites"
-            tools:layout="@layout/fragment_favourites"/>
+            tools:layout="@layout/fragment_favourites">
+        <action
+                android:id="@+id/actionDetailFromFavourites"
+                app:destination="@id/detailFragment3"/>
+    </fragment>
+    <fragment
+            android:id="@+id/detailFragment3"
+            android:name="com.example.movies.view.DetailFragment"
+            android:label="DetailFragment">
+        <action
+                android:id="@+id/actionFavouritesFromDetail"
+                app:destination="@id/favouritesFragment"/>
+        <argument
+                android:name="movieUuid"
+                app:argType="integer"
+                android:defaultValue="0"/>
+        <argument
+                android:name="fromFavourite"
+                app:argType="boolean"
+                android:defaultValue="false"/>
+    </fragment>
 </navigation>

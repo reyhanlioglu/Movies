@@ -10,11 +10,19 @@ class DetailViewModel(application: Application): BaseViewModel(application) {
 
     val movieLiveData = MutableLiveData<Movie>()
 
-    fun fetch(uuid: Int) {
+    fun fetch(id: Int) {
         //launch is similar to doInBackground method on java
         launch {
-            val movie = MovieDatabase(getApplication()).movieDao().getMovie(uuid)
+            val movie = MovieDatabase(getApplication()).movieDao().getMovie(id)
             movieLiveData.value = movie
+        }
+    }
+
+    fun fetchFromFavourite(id: Int) {
+        //launch is similar to doInBackground method on java
+        launch {
+            val movie = MovieDatabase(getApplication()).favouriteMovieDao().getMovie(id)
+            movieLiveData.value = Movie(movie)
         }
     }
 }

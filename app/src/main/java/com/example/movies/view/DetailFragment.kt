@@ -34,6 +34,8 @@ class DetailFragment : Fragment() {
 
     private lateinit var viewModel: DetailViewModel
     private var movieUuid = 0
+    private var movieId = 0
+    private var fromFavourite = false
 
     private lateinit var dataBinding: FragmentDetailBinding
     private var sendSmsStarted = false
@@ -55,10 +57,17 @@ class DetailFragment : Fragment() {
 
         arguments?.let {
             movieUuid = DetailFragmentArgs.fromBundle(it).movieUuid
+            fromFavourite = DetailFragmentArgs.fromBundle(it).fromFavourite
+
         }
 
         viewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
-        viewModel.fetch(movieUuid)
+
+        if(fromFavourite) {
+            viewModel.fetchFromFavourite(movieUuid)
+        } else {
+            viewModel.fetch(movieUuid)
+        }
 
 
         observeViewModel()

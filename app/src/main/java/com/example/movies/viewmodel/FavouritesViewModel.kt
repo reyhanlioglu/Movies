@@ -63,7 +63,7 @@ class FavouritesViewModel(application: Application) : BaseViewModel(application)
 
                 val result = favouriteMovieDao.insertAll(favouriteMovie)
                 favouriteMovie.uuid = result[0].toInt()
-                println("ID is " + favouriteMovie.movieId)
+                println("UUID is " + favouriteMovie.uuid)
                 favouriteMoviesLiveData.value?.add(favouriteMovie)
 
             } else
